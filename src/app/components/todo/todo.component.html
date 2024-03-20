@@ -1,0 +1,11 @@
+<input type="text" #input />
+<button (click)="addTodo(input)">Add</button>
+<ul>
+  @for (todo of todos; track $index) {
+  <li class="todo_item">
+    <input type="checkbox" [(ngModel)]="todo.isDone" />
+    <span [class.done]="todo.isDone">{{ todo.name }}</span>
+    <span class="remove" (click)="removeTodo(todo.id)">x</span>
+  </li>
+  }
+</ul>

@@ -1,0 +1,13 @@
+.todo_item {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+  .done {
+    text-decoration: line-through;
+  }
+  .remove {
+    cursor: pointer;
+    color: red;
+    margin-left: 10px;
+  }
+}
