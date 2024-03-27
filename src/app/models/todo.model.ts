@@ -1,4 +1,4 @@
-import { ITodo } from '../components/types/ITodo';
+import { ITodo } from '../types/ITodo';
 
 export class Todo implements ITodo {
   constructor(

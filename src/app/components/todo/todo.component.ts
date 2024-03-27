@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { GetIdService } from '../../services/randomDigit.service';
-import { ITodo } from '../types/ITodo';
+import { GetIdService } from '../../services/randomId.service';
+import { ITodo } from '../../types/ITodo';
 import { Todo } from '../../models/todo.model';
 import { AfterViewInit } from '@angular/core';
 
