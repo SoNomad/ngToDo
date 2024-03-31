@@ -1,8 +1,10 @@
 <div>
   <ul>
-    @for (user of users; track $index) {
+    @for (user of users$ | async; track user) {
     <li>
-      {{ user.name }}
+      <span [routerLink]="['/user', user.id]"
+        >{{ user.id }} {{ user.name }}</span
+      >
       <button (click)="removeUser(user)">x</button>
     </li>
     }

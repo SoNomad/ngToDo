@@ -7,23 +7,31 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class UsersService {
-  private readonly url = 'https://jsonplaceholder.typicode.com/users';
-  public readonly _userSubject$ = new BehaviorSubject<IUser[]>([]);
-  public readonly users$ = this._userSubject$.asObservable();
+  private readonly url = 'https://jsonplaceholder.typicode.com/';
+
+  public readonly entities$ = new BehaviorSubject<IUser[]>([]);
+  public readonly userDetails = new BehaviorSubject<IUser>({} as IUser);
 
   constructor(private http: HttpClient) {
     this.getUsers();
   }
-
-  getUsers(): void {
-    this.http.get<IUser[]>(this.url).subscribe((users) => {
-      this._userSubject$.next(users);
-    });
+  getUser(id: number):  {
+    const user = this.entities$.value.find((user) => user.id === id);
+    if (user) {
+      this.userDetails.next(user);
+      return user;
+    }
+    // this.http.get<IUser>(`${this.url}/user/${id}`).subscribe((user) => {
+    //   this.userDetails.next(user);
+    // });
+    // return user as Observable<IUser>;
   }
 
-  //   getUser(id: number) {
-  //     return this.http.get('https://jsonplaceholder.typicode.com/users/' + id);
-  //   }
+  getUsers(): void {
+    this.http.get<IUser[]>(`${this.url}/users`).subscribe((users) => {
+      this.entities$.next(users);
+    });
+  }
 
   //   creatUser(user: IUser) {
   //     return this.http.post('https://jsonplaceholder.typicode.com/users', user);
@@ -31,8 +39,8 @@ export class UsersService {
 
   deleteUser(userToDelete: IUser): void {
     this.http.delete<IUser>(`${this.url}/${userToDelete.id}`).subscribe(() => {
-      this._userSubject$.next(
-        this._userSubject$.value.filter((user) => user.id !== userToDelete.id)
+      this.entities$.next(
+        this.entities$.value.filter((user) => user.id !== userToDelete.id)
       );
     });
   }

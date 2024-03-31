@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GetIdService } from '../../services/randomId.service';
@@ -9,7 +9,7 @@ import { AfterViewInit } from '@angular/core';
 @Component({
   selector: 'app-todo',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   providers: [GetIdService],
   templateUrl: './todo.component.html',
   styleUrl: './todo.component.css',
