@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IUser } from '../types/ITodo';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -10,32 +11,34 @@ export class UsersService {
   private readonly url = 'https://jsonplaceholder.typicode.com/';
 
   public readonly entities$ = new BehaviorSubject<IUser[]>([]);
-  public readonly userDetails = new BehaviorSubject<IUser>({} as IUser);
+  public readonly userDetails$ = new BehaviorSubject<IUser>({} as IUser);
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private activatedRoute: ActivatedRoute
+  ) {
     this.getUsers();
   }
-  getUser(id: number):  {
-    const user = this.entities$.value.find((user) => user.id === id);
-    if (user) {
-      this.userDetails.next(user);
-      return user;
-    }
-    // this.http.get<IUser>(`${this.url}/user/${id}`).subscribe((user) => {
-    //   this.userDetails.next(user);
-    // });
-    // return user as Observable<IUser>;
+
+  getUser(): void {
+    this.activatedRoute.params.subscribe((params) => {
+      const id = params['id'];
+
+      this.http.get<IUser>(`${this.url}users/${id}`).subscribe((user) => {
+        this.userDetails$.next(user);
+      });
+    });
   }
 
   getUsers(): void {
-    this.http.get<IUser[]>(`${this.url}/users`).subscribe((users) => {
+    this.http.get<IUser[]>(`${this.url}users`).subscribe((users) => {
       this.entities$.next(users);
     });
   }
 
-  //   creatUser(user: IUser) {
-  //     return this.http.post('https://jsonplaceholder.typicode.com/users', user);
-  //   }
+    creatUser(user: IUser): void {
+      this.http.post('https://jsonplaceholder.typicode.com/users', user);
+    }
 
   deleteUser(userToDelete: IUser): void {
     this.http.delete<IUser>(`${this.url}/${userToDelete.id}`).subscribe(() => {
