@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IUser } from '../types/ITodo';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
@@ -37,7 +37,9 @@ export class UsersService {
   }
 
     creatUser(user: IUser): void {
-      this.http.post('https://jsonplaceholder.typicode.com/users', user);
+      this.http.post<IUser> ('https://jsonplaceholder.typicode.com/users', user).subscribe((user: IUser) => {
+      this.entities$.next([...this.entities$.value, user]);
+    }) ;
     }
 
   deleteUser(userToDelete: IUser): void {
